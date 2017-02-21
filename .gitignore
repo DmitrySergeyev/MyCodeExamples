@@ -69,3 +69,4 @@ RemoteSystemsTempFiles
 .settings
 .classpath
 .project
+.springBeans
