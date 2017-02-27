@@ -116,6 +116,10 @@ public class UserService {
 		String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 		return getUserByEmail(userEmail);
 	}
+	
+	public String getAuthorisatedUserEmail() {
+		return SecurityContextHolder.getContext().getAuthentication().getName();
+	}
 
 	public void changeUserPassword(User user, String newPassword) throws ResourceNotFoundException {
 

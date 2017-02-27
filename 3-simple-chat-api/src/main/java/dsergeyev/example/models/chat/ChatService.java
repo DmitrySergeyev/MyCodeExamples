@@ -80,8 +80,7 @@ public class ChatService {
 		
 		Chat chat = this.chatRepository.findOne(cmDto.getChatId());		
 
-		Message message = new Message(cmDto.getText(), chat);
-		message.setSender(user);
+		Message message = new Message(cmDto.getText(), chat, user);
 		Message newMessage = this.messageRepository.save(message);
 
 		chat.setLastMessage(newMessage);

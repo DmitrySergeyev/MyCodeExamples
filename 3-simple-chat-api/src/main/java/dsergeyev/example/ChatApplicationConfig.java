@@ -40,6 +40,9 @@ public class ChatApplicationConfig {
 	public static final String MESSAGES = REQUEST_MAPPING_PREFIX + "/messages";
 	public static final String MESSAGES_SECURITY = MESSAGES + "/**";
 
+	public static final String ADMIN = "/admin";
+	public static final String ADMIN_CHAT = ADMIN + "/chat";
+	
 	@Bean
 	public Validator validator() {
 	    return new LocalValidatorFactoryBean();
