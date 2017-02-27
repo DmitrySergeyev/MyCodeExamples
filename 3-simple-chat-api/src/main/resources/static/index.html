@@ -24,6 +24,7 @@
 		$(document).ready(function() {
 			var messageList = $("#messages");
 			stompClient.connect({}, function(frame) {
+				stompClient.subscribe("/topic/service-chat", function(data) {
 					var message = data.body;
 					messageList.append("<li>" + message + "</li>");
 				});
@@ -35,6 +36,7 @@
 		function sendMessage() {
 			var mes = $("#message").val();
 			console.log("Send message - " + mes);
+			stompClient.send("/app/service-chat", {}, mes);
 		}
 	</script>
 </body>

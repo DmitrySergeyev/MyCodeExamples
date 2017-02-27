@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dsergeyev.example.models.message.ServiceMessage;
+import dsergeyev.example.models.message.ServiceMessageRepository;
 import dsergeyev.example.models.user.User;
 import dsergeyev.example.models.user.UserService;
 
@@ -18,6 +20,7 @@ public class WebSocketController {
 	@Autowired
 	private UserService userService;
 	@Autowired
+	private ServiceMessageRepository systemChatMessageRepository;
 	
 //	@MessageMapping("/topic/system-chat")
 //	@SendTo("/topic/system-chat")
@@ -28,12 +31,15 @@ public class WebSocketController {
 //		return message;
 //	}
 	
+	@MessageMapping("/service-chat")
 	public String getMessage(String text) {
 		User user = this.userService.getAuthorisatedUser();
+		ServiceMessage message = new ServiceMessage(text, user);		
 		this.systemChatMessageRepository.save(message);		
 		return String.format("[%s] %s %s (%s): %s", message.getTime().toLocalTime().toString(), user.getFirstName(), user.getSecondName(), user.getRole().getName(), text);
 	}
 	
+	@RequestMapping("/service-chat")
 	public String sender(@RequestParam String message) {
 		this.template.convertAndSend(message);
 		return "OK-Sent";
