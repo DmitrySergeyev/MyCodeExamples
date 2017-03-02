@@ -7,9 +7,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -177,7 +179,8 @@ public class User {
 		this.webSite = webSite;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity=Role.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Role.class)
+	@JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
 	@JsonProperty(access = Access.READ_ONLY)
 	public Role getRole() {
 		return role;
@@ -207,5 +210,24 @@ public class User {
 		this.secondName = secondName;
 		this.dateOfBirth = dateOfBirth;
 		this.webSite = webSite;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		User user = (User) o;
+
+		if (id != user.id) return false;
+		
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = (int) (id ^ (id >>> 32));
+		result = 31 * result;
+		return result;
 	}
 }

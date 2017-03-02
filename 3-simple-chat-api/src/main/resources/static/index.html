@@ -18,26 +18,91 @@
 		<ol id="messages"></ol>
 	</div>
 	<script type="text/javascript">
+	
 		var socket = new SockJS('/ws');
 		var stompClient = Stomp.over(socket);
 
-		$(document).ready(function() {
-			var messageList = $("#messages");
-			stompClient.connect({}, function(frame) {
-				stompClient.subscribe("/topic/service-chat", function(data) {
-					var message = data.body;
-					messageList.append("<li>" + message + "</li>");
-				});
-			}, function(error) {
-				console.log("STOMP protocol error - " + error);
-			});
-		});
+		$(document).ready(
+			function() {
+				var messageList = $("#messages");
+				
+				stompClient.connect({}, 
+					function(frame) {
+						// Messages from service chat (only for administrators and moderators)
+						stompClient.subscribe("/topic/admin/service-chat", function(data) {
+							var serviceMessage = JSON.parse(data.body);
+							messageList.append("<li>" + "[" + serviceMessage.time + "] " + serviceMessage.sender.firstName + " " + serviceMessage.sender.secondName + "(" + serviceMessage.sender.role.name + "): " + serviceMessage.text + "</li>");
+						});
+						// Messages from service chat (only for administrators and moderators)
+						stompClient.subscribe("/user/queue/admin/service-chat/messages/get-all", function(data) {
+							messageList.append("<li>" + data.body + "</li>");
+						});
+						
+						
+						// 1 - Get creadet chat
+						stompClient.subscribe("/user/queue/chats/create", function(data) {
+							var chat = JSON.parse(data.body);
+							messageList.append("<li>" + "YOU CREATE NEW CHAT (id = " + chat.id + ", title = " + chat.title + "):" + "</li>");
+							messageList.append("<li>" + data.body + "</li>");
+						});
+						// 2 - Get messages were sent by other users
+						stompClient.subscribe("/user/queue/chats/incoming", function(data) {
+							var chat = JSON.parse(data.body);
+							messageList.append("<li>" + "YOU WAS ADDED TO NEW CHAT (id = " + chat.id + ", title = " + chat.title + "):" + "</li>");
+							messageList.append("<li>" + data.body + "</li>");
+						});		
+						// 3 - Get requested user's chats
+						stompClient.subscribe("/user/queue/chats/get-all", function(data) {
+							var chats = JSON.parse(data.body);
+							var srtChats = "";
+							chats.forEach(function(element) {
+								srtChats = srtChats + element.id + " ";
+							});
+							messageList.append("<li>" + "ALL YOUR CHATS: " + srtChats + "</li>");
+							messageList.append("<li>" + data.body + "</li>");
+						});		
+						// 4 - Get requested chat by id
+						stompClient.subscribe("/user/queue/chats/id", function(data) {
+							var chat = JSON.parse(data.body);
+							messageList.append("<li>" + "CHAT RECIVED BY ID (id = " + chat.id + ")" + "</li>");
+							messageList.append("<li>" + data.body + "</li>");
+						});	
+						// 5 - Get sended message
+						stompClient.subscribe("/user/queue/chats/messages/send", function(data) {
+							var message = JSON.parse(data.body);
+							messageList.append("<li>" + "YOUR SENDED MESSAGE (id = " + message.id + "): " + "</li>");
+							messageList.append("<li>" + data.body + "</li>");
+						});	
+						// 6 - Get requested messages of chat
+						stompClient.subscribe("/user/queue/chats/messages/get-all", function(data) {
+							var messages = JSON.parse(data.body);
+							var srtMessages = "";
+							messages.forEach(function(element) {
+								srtMessages = srtMessages + element.id + " ";
+							});
+							messageList.append("<li>" + "MESSAGES OF CHAT (" + srtMessages + ")" + "</li>");
+							messageList.append("<li>" + data.body + "</li>");
+						});				
+						// 7 - Get messages were sent by other users
+						stompClient.subscribe("/user/queue/chats/messages/incoming", function(data) {
+							var message = JSON.parse(data.body);
+							messageList.append("<li>" + "NEW MESSAGE (id = " + message.id + ")" + "</li>");
+							messageList.append("<li>" + data.body + "</li>");
+						});			
+					}, 
+					function(error) {
+						console.log("STOMP protocol error - " + error);
+					}
+				);
+			}
+		);
 
 		function sendMessage() {
 			var mes = $("#message").val();
 			console.log("Send message - " + mes);
-			stompClient.send("/app/service-chat", {}, mes);
+			stompClient.send("/app/admin/service-chat", {}, mes);
 		}
+		
 	</script>
 </body>
 </html>

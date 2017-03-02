@@ -29,7 +29,6 @@ Using basic authentification to access to the resources;
 * Import projects as "Existing Maven Project". Run it as "Spring Boot App" (for Eclipse: Run configurations... -> Spring boot app, than chose current project "3-simple-chat-api" in "Projects" field and "dsergeyev.example.ChatApplication" in "Main type" field. Use this configuration to run project.
 * Alternatively, you can run it like standart Maven application. Open project in terminal and successively perform next commands:
 
-[indent=0]
 ----
 	$	mvn package
 	$	java -jar target/demo-api-app-0.0.1-SNAPSHOT.jar

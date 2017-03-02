@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import dsergeyev.example.models.user.User;
 
 @Entity
-@Table(name = "sytem_message")
+@Table(name = "service_message")
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @JsonPropertyOrder({ "id", "time", "sender", "text"})
 public class ServiceMessage {
@@ -58,8 +58,8 @@ public class ServiceMessage {
 		this.time = time;
 	}
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, targetEntity=User.class)
-	@JoinColumn(name="sender_id")
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=User.class)
+	@JoinColumn(name="sender_id", referencedColumnName="id")
 	public User getSender() {
 		return sender;
 	}
@@ -88,5 +88,24 @@ public class ServiceMessage {
 		this.text = text;
 		this.sender = sender;
 		this.time = ZonedDateTime.now();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ServiceMessage serviceMessage = (ServiceMessage) o;
+
+		if (id != serviceMessage.id) return false;
+		
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = (int) (id ^ (id >>> 32));
+		result = 31 * result;
+		return result;
 	}
 }

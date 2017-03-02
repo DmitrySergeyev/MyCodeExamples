@@ -60,7 +60,7 @@ public class Message {
 		this.time = time;
 	}
 
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, targetEntity=User.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=User.class)
 	@JoinColumn(name="sender_id")
 	public User getSender() {
 		return sender;
@@ -82,7 +82,7 @@ public class Message {
 	}
 	
 	@NotNull
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, targetEntity=Chat.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Chat.class)
 	@JoinColumn(name="chat_id")
 	public Chat getChat() {
 		return chat;
@@ -102,5 +102,24 @@ public class Message {
 		this.chat = chat;
 		this.sender = sender;
 		this.time = ZonedDateTime.now();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Message message = (Message) o;
+
+		if (id != message.id) return false;
+		
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = (int) (id ^ (id >>> 32));
+		result = 31 * result;
+		return result;
 	}
 }

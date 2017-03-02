@@ -10,6 +10,8 @@ import javax.persistence.Id;
 
 import org.hibernate.validator.constraints.Length;
 
+import dsergeyev.example.models.user.User;
+
 @Entity
 public class Role {
 
@@ -44,4 +46,23 @@ public class Role {
     public Role(String name) {
 		this.name = name;
 	} 
+    
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Role role = (Role) o;
+
+		if (id != role.id) return false;
+		
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = (int) (id ^ (id >>> 32));
+		result = 31 * result;
+		return result;
+	}
 }

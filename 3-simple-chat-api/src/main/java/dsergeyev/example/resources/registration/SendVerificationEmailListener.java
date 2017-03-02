@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import dsergeyev.example.ChatApplication;
-import dsergeyev.example.ChatApplicationConfig;
+import dsergeyev.example.controllers.rest.UserRestController;
 import dsergeyev.example.models.user.User;
 import dsergeyev.example.models.user.UserService;
 import dsergeyev.example.models.user.token.VerificationToken;
@@ -46,7 +46,7 @@ public class SendVerificationEmailListener implements ApplicationListener<SendVe
 		}
 
 		// 3 - Send email to user
-		String confirmationUrl = event.getAppUrl() + ChatApplicationConfig.USERS_VERIFICATION_EMAIL_CONFIRM + "?token=" + token;
+		String confirmationUrl = event.getAppUrl() + UserRestController.USERS_VERIFICATION_EMAIL_CONFIRM + "?token=" + token;
 		this.verificationEmailSender.sendVerificationEmail(user, confirmationUrl);
 
 		logger.info("Verication email to user '{}'  has been send - {}", user.getEmail(), confirmationUrl);

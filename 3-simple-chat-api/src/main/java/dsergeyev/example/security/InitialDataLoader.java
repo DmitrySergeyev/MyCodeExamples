@@ -17,7 +17,9 @@ import org.springframework.stereotype.Component;
 import dsergeyev.example.ChatApplication;
 import dsergeyev.example.models.chat.Chat;
 import dsergeyev.example.models.chat.ChatRepository;
+import dsergeyev.example.models.chat.ChatWithoutLastMessage;
 import dsergeyev.example.models.roles.Role;
+import dsergeyev.example.models.roles.RoleRepository;
 import dsergeyev.example.models.user.User;
 import dsergeyev.example.models.user.UserService;
 
@@ -28,7 +30,9 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 	boolean alreadySetup = false;
 
 	@Autowired
-	ChatRepository conversationRepositiry;	
+	private RoleRepository roleRepository;
+	@Autowired
+	private ChatRepository chatRepositiry;	
 	@Autowired
 	private UserService userService;
 
@@ -42,15 +46,19 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		Role adminRole = new Role("ROLE_ADMIN");
 		Role moderRole = new Role("ROLE_MODERATOR");
 		Role userRole = new Role("ROLE_USER");
+		adminRole = this.roleRepository.save(adminRole);
+		moderRole = this.roleRepository.save(moderRole);
+		userRole = this.roleRepository.save(userRole);
 		
 		User testAdmin = new User("admin1@gmail.com", "admin1", true, adminRole, "Admin1", "Admin2", LocalDate.of(1991, 1, 1), "https://github.com");
 		User moderUser = new User("moder1@gmail.com", "moder1", true, moderRole, "Moder1", "Moder2", LocalDate.of(1992, 2, 2), "https://vk.com");
+		
 		User testUser1 = new User("user1@gmail.com", "user1", true, userRole, "User1-1", "User1-2", LocalDate.of(1993, 3, 3), null);
 		User testUser2 = new User("user2@gmail.com", "user2", true, userRole, "User2-1", "User2-2", LocalDate.of(1994, 4, 4), null);
 		User testUser3 = new User("user3@gmail.com", "user3", true, userRole, "User3-1", "User3-2", null, "https;//my-web-site.com");
 		User testUser4 = new User("user4@gmail.com", "user4", true, userRole, "User4-1", "User4-2", LocalDate.of(1996, 6, 6), null);
 		User testUser5 = new User("user5@gmail.com", "user5", true, userRole, "User5-1", "User5-2", LocalDate.of(1997, 7, 7), null);
-		
+			
 		Set<User> users1 = new HashSet<>();
 		users1.add(testUser2);
 		users1.add(testUser3);
@@ -72,12 +80,9 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		this.userService.createUser(testUser4);
 		this.userService.createUser(testUser5);
 		
-		this.conversationRepositiry.save(conversation1);
-		this.conversationRepositiry.save(conversation2);
-		
-//		List<Chat> con = this.conversationRepositiry.findAll();
-//		con.forEach(c-> c.getUsers().forEach(u -> logger.info(u.getEmail())));
-		
+		this.chatRepositiry.save(conversation1);
+		this.chatRepositiry.save(conversation2);
+				
 	    alreadySetup = true;
 	}
 }

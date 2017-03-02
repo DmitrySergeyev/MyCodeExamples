@@ -247,4 +247,9 @@ public class UserService {
 				"User with id = " + userId + " has been successfully  removed!", request.getRequestURI());
 		return new ResponseEntity<>(infoResponse, null, HttpStatus.OK);
 	}
+	
+	public void deleteUser(Long userId) {
+		this.checkUserExistsById(userId);
+		this.userRepository.delete(userId);
+	}
 }

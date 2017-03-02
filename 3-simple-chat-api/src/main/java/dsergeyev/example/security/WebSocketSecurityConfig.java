@@ -9,8 +9,11 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 
 	protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
 		messages
-			.simpMessageDestMatchers("/app/system-chat").hasAnyRole("MODERATOR", "ADMIN")
-			.simpSubscribeDestMatchers("/topic/system-chat").hasAnyRole("MODERATOR", "ADMIN")
+			// Service chat
+			.simpMessageDestMatchers("/app/admin/service-chat").hasAnyRole("MODERATOR", "ADMIN")
+			.simpSubscribeDestMatchers("/topic/admin/service-chat").hasAnyRole("MODERATOR", "ADMIN")
+			.simpMessageDestMatchers("/app/admin/service-chat/messages/get-all").hasAnyRole("MODERATOR", "ADMIN")
+			.simpSubscribeDestMatchers("/user/queue/admin/service-chat/messages/get-all").hasAnyRole("MODERATOR", "ADMIN")
 			.anyMessage().authenticated();
     }
 	
