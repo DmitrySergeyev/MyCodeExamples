@@ -1,4 +1,4 @@
-package dsergeyev.example.controllers;
+package dsergeyev.example.controllers.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,9 @@ import dsergeyev.example.ChatApplicationConfig;
 import dsergeyev.example.models.roles.RoleRepository;
 
 @RestController
-public class RoleController {
+public class RoleRestController {	
+	
+	public final static String ROLE = ChatApplicationConfig.API_VERSION_PREFIX + "/roles";
 
 	@Autowired
 	private RoleRepository roleRepository;

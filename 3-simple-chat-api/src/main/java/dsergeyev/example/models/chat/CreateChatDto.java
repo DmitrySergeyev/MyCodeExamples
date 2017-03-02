@@ -1,5 +1,6 @@
 package dsergeyev.example.models.chat;
 
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -7,7 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class CreateChatDto {
 
 	private String title;
-	private Set<Long> userIds;
+	private List<Long> userIds;
 		
 	@NotEmpty
 	public String getTitle() {
@@ -19,11 +20,11 @@ public class CreateChatDto {
 	}
 
 	@NotEmpty
-	public Set<Long> getUserIds() {
+	public List<Long> getUserIds() {
 		return userIds;
 	}
 
-	public void setUserIds(Set<Long> userIds) {
+	public void setUserIds(List<Long> userIds) {
 		this.userIds = userIds;
 	}	
 }

@@ -1,5 +1,7 @@
 package dsergeyev.example.models.chat;
 
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +20,9 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
 
 	@Query(value = "SELECT c FROM Chat c WHERE :user in elements(c.users)")
 	public Page<Chat> findAllByUser(@Param("user") User user, Pageable pageable);
+
+	@Query(value = "SELECT c FROM Chat c WHERE :user in elements(c.users)")
+	public Set<Chat> findAllByUser(@Param("user") User user);
+	
+//	public Set<ChatWithoutLastMessage> findAllByOwner(User user);
 }

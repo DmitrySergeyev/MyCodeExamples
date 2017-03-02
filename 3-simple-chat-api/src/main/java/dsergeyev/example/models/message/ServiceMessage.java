@@ -23,21 +23,19 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-import dsergeyev.example.models.chat.Chat;
 import dsergeyev.example.models.user.User;
 
 @Entity
-@Table(name = "message")
+@Table(name = "service_message")
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-@JsonPropertyOrder({ "id", "time", "sender", "text", "chat" })
-public class Message {
+@JsonPropertyOrder({ "id", "time", "sender", "text"})
+public class ServiceMessage {
 
 	private Long id;
 	private ZonedDateTime time;
 	private User sender;
 	private String text;
-	private Chat chat;
-
+	
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -59,9 +57,9 @@ public class Message {
 	public void setTime(ZonedDateTime time) {
 		this.time = time;
 	}
-
+	
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity=User.class)
-	@JoinColumn(name="sender_id")
+	@JoinColumn(name="sender_id", referencedColumnName="id")
 	public User getSender() {
 		return sender;
 	}
@@ -81,25 +79,13 @@ public class Message {
 		this.text = message;
 	}
 	
-	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Chat.class)
-	@JoinColumn(name="chat_id")
-	public Chat getChat() {
-		return chat;
-	}
-
-	public void setChat(Chat conversation) {
-		this.chat = conversation;
-	}	
-
-	public Message() {
+	public ServiceMessage() {
 		super();
 	}
 
-	public Message(String text, Chat chat, User sender) {
+	public ServiceMessage(String text, User sender) {
 		super();
 		this.text = text;
-		this.chat = chat;
 		this.sender = sender;
 		this.time = ZonedDateTime.now();
 	}
@@ -109,9 +95,9 @@ public class Message {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 
-		Message message = (Message) o;
+		ServiceMessage serviceMessage = (ServiceMessage) o;
 
-		if (id != message.id) return false;
+		if (id != serviceMessage.id) return false;
 		
 		return true;
 	}

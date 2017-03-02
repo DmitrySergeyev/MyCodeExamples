@@ -1,6 +1,5 @@
 package dsergeyev.example.models.chat;
 
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
@@ -26,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import dsergeyev.example.models.message.Message;
+import dsergeyev.example.models.message.ServiceMessage;
 import dsergeyev.example.models.user.User;
 
 @Entity
@@ -74,8 +74,8 @@ public class Chat {
 		this.updateDate = updateDate;
 	}
 
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, targetEntity=Message.class)
-	@JoinColumn(name="last_message_id")
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Message.class)
+	@JoinColumn(name="last_message_id", referencedColumnName = "id", nullable = true)
 	public Message getLastMessage() {
 		return lastMessage;
 	}
@@ -84,7 +84,8 @@ public class Chat {
 		this.lastMessage = lastMessage;
 	}
 	
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, targetEntity=User.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=User.class)
+	@JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
 	public User getOwner() {
 		return owner;
 	}
@@ -93,10 +94,10 @@ public class Chat {
 		this.owner = owner;
 	}
 
-	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_chat", 
-	joinColumns = @JoinColumn (name = "chat_id", referencedColumnName="id"),
-	inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName="id"))
+		joinColumns = @JoinColumn (name = "chat_id", referencedColumnName="id", nullable = false),
+		inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName="id", nullable = false))
 	public Set<User> getUsers() {
 		return users;
 	}
@@ -115,5 +116,24 @@ public class Chat {
 		this.owner = owner;
 		this.users = users;
 		this.updateDate = ZonedDateTime.now();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Chat chat = (Chat) o;
+
+		if (id != chat.id) return false;
+		
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = (int) (id ^ (id >>> 32));
+		result = 31 * result;
+		return result;
 	}
 }

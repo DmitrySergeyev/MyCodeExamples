@@ -116,6 +116,10 @@ public class UserService {
 		String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 		return getUserByEmail(userEmail);
 	}
+	
+	public String getAuthorisatedUserEmail() {
+		return SecurityContextHolder.getContext().getAuthentication().getName();
+	}
 
 	public void changeUserPassword(User user, String newPassword) throws ResourceNotFoundException {
 
@@ -242,5 +246,10 @@ public class UserService {
 		StandartInfoHttpResponse infoResponse = new StandartInfoHttpResponse(HttpStatus.OK,
 				"User with id = " + userId + " has been successfully  removed!", request.getRequestURI());
 		return new ResponseEntity<>(infoResponse, null, HttpStatus.OK);
+	}
+	
+	public void deleteUser(Long userId) {
+		this.checkUserExistsById(userId);
+		this.userRepository.delete(userId);
 	}
 }

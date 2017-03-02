@@ -15,7 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import dsergeyev.example.ChatApplicationConfig;
+import dsergeyev.example.controllers.rest.RoleRestController;
+import dsergeyev.example.controllers.rest.UserRestController;
 
 @Configuration
 @EnableWebSecurity
@@ -36,16 +37,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.authorizeRequests()				
 					// User registration and email verification
-					.antMatchers(HttpMethod.POST, ChatApplicationConfig.USERS_REGISTRATION).permitAll()
-					.antMatchers(HttpMethod.GET, ChatApplicationConfig.USERS_VERIFICATION_EMAIL_RESET).permitAll()
-					.antMatchers(HttpMethod.GET, ChatApplicationConfig.USERS_VERIFICATION_EMAIL_CONFIRM).permitAll()
+					.antMatchers(HttpMethod.POST, UserRestController.USERS_REGISTRATION).permitAll()
+					.antMatchers(HttpMethod.GET, UserRestController.USERS_VERIFICATION_EMAIL_RESET).permitAll()
+					.antMatchers(HttpMethod.GET, UserRestController.USERS_VERIFICATION_EMAIL_CONFIRM).permitAll()
 					// Reset password (forgot password)
-					.antMatchers(HttpMethod.GET, ChatApplicationConfig.USERS_RESET_PASSWORD).permitAll()
-					.antMatchers(HttpMethod.POST, ChatApplicationConfig.USERS_RESET_PASSWORD_CONFIRM).permitAll()
+					.antMatchers(HttpMethod.GET, UserRestController.USERS_RESET_PASSWORD).permitAll()
+					.antMatchers(HttpMethod.POST, UserRestController.USERS_RESET_PASSWORD_CONFIRM).permitAll()
 					// Check if user exists by email
-					.antMatchers(HttpMethod.GET, ChatApplicationConfig.USERS_CHECK_BY_EMAIL).permitAll()
+					.antMatchers(HttpMethod.GET, UserRestController.USERS_CHECK_BY_EMAIL).permitAll()
 					// Delete user
-					.antMatchers(HttpMethod.DELETE, ChatApplicationConfig.USERS_ID).hasRole("ADMIN")
+					.antMatchers(HttpMethod.DELETE, UserRestController.USERS_ID).hasRole("ADMIN")
+					// Get roles
+					.antMatchers(HttpMethod.GET, RoleRestController.ROLE).hasRole("ADMIN")
 					// All other requests
 					.anyRequest().authenticated()
 			.and()
