@@ -1,9 +1,6 @@
 package dsergeyev.example.models.chat;
 
 import java.time.ZonedDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import dsergeyev.example.models.message.CreateMessageDto;
@@ -36,8 +32,6 @@ public class ChatService {
 	private MessageRepository messageRepository;
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private SimpMessagingTemplate template;
 
 	private void checkChatExistsById(Long chatId) {
 		if (!this.chatRepository.exitsById(chatId)) {

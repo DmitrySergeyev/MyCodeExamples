@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Spring Boot WebSocket Messaging</title>
 <script type="text/javascript"
@@ -16,6 +16,14 @@
 		<input type="button" onclick="sendMessage()" value = "Send">
 		<h3>Messages:</h3>
 		<ol id="messages"></ol>
+	</div>
+	<div>
+		<form method="POST" enctype="multipart/form-data" action="/api/v1/files/images">
+			<table>
+				<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+			</table>
+		</form>
 	</div>
 	<script type="text/javascript">
 	

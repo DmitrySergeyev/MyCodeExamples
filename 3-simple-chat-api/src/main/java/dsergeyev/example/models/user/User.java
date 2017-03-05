@@ -3,11 +3,9 @@ package dsergeyev.example.models.user;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,7 +36,7 @@ import dsergeyev.example.resources.validation.user.UniqueUserEmail;
 @Table(name = "user")
 @PasswordMatches
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-@JsonPropertyOrder({ "id", "email", "enabled", "role", "firstName", "secondName", "dateOfBirth", "webSite", "createDate", "updateDate" })
+@JsonPropertyOrder({ "id", "email", "enabled", "role", "firstName", "secondName", "dateOfBirth", "webSite", "photo", "createDate", "updateDate" })
 public class User {
 	
 	private long id;
@@ -54,10 +52,11 @@ public class User {
 	private String secondName;
 	private LocalDate dateOfBirth;
 	private String webSite;
+	private String photo;
 
 	private ZonedDateTime createDate;
 	private ZonedDateTime updateDate;
-
+	
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -179,6 +178,15 @@ public class User {
 		this.webSite = webSite;
 	}
 
+	@Column(name = "photo")
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+	
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Role.class)
 	@JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
 	@JsonProperty(access = Access.READ_ONLY)

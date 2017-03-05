@@ -10,11 +10,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dsergeyev.example.ChatApplicationConfig;
@@ -41,32 +40,32 @@ public class ChatRestController {
 	private ChatService chatService;
 	
 	// 1 - Create new chat
-	@RequestMapping(method = RequestMethod.POST, value = CHATS)
+	@PostMapping(value = CHATS)
 	public ResponseEntity<?> createNewChat(@Valid @RequestBody CreateChatDto ccDto, HttpServletRequest request) {
 		return this.chatService.createChatAndGetResponseEntity(ccDto, request);
 	}
 	
 	// 2 - Get all chats for current user
-	@RequestMapping(method = RequestMethod.GET, value = CHATS)
+	@GetMapping(value = CHATS)
 	public ResponseEntity<?> getAllChats(HttpServletRequest request,
 			@PageableDefault(page = DEFAULT_PAGE_NUM, size = DEFAULT_PAGE_SIZE, sort = DEFAULT_CHATS_SORT, direction=Direction.DESC) Pageable pageable) {
 		return this.chatService.getAllChatAndGetResponseEntity(pageable, request);
 	}
 
 	// 3 - Get chat by id
-	@RequestMapping(method = RequestMethod.GET, value = CHATS_ID)
+	@GetMapping(value = CHATS_ID)
 	public ResponseEntity<?> getChatById(@PathVariable Long id) {
 		return new ResponseEntity<>(this.chatService.getChatById(id), HttpStatus.OK);
 	}
 	
 	// 4 - Send message
-	@RequestMapping(method = RequestMethod.POST, value = CHAT_ID_MESSAGES)
+	@PostMapping(value = CHAT_ID_MESSAGES)
 	public ResponseEntity<?> sendMessage(@PathVariable(value = "id") Long chatId, @Valid @RequestBody CreateMessageDto cmDto, HttpServletRequest request) {
 		return this.chatService.createMessageAndGetResponseEntity(chatId, cmDto, request);
 	}
 	
 	// 5 - Get messages
-	@RequestMapping(method = RequestMethod.GET, value = CHAT_ID_MESSAGES)
+	@GetMapping(value = CHAT_ID_MESSAGES)
 	public ResponseEntity<?> getMessages(@PathVariable(value = "id") Long chatId,
 			@PageableDefault(page = DEFAULT_PAGE_NUM, size = DEFAULT_PAGE_SIZE, sort = DEFAULT_MESSAGES_SORT, direction=Direction.DESC) Pageable pageable) {
 		return new ResponseEntity<>(this.chatService.getMessages(chatId, pageable), HttpStatus.OK);
