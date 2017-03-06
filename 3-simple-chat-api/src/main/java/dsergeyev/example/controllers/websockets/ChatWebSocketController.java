@@ -11,7 +11,7 @@ import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
 import dsergeyev.example.models.chat.Chat;
-import dsergeyev.example.models.chat.ChatService;
+import dsergeyev.example.models.chat.DefaultChatService;
 import dsergeyev.example.models.chat.CreateChatDto;
 import dsergeyev.example.models.message.CreateMessageDto;
 import dsergeyev.example.models.message.Message;
@@ -22,7 +22,7 @@ import dsergeyev.example.models.user.UserService;
 public class ChatWebSocketController {
 
 	@Autowired
-	private ChatService chatService;
+	private DefaultChatService chatService;
 	@Autowired
 	private SimpMessagingTemplate template;
 	@Autowired
@@ -77,8 +77,7 @@ public class ChatWebSocketController {
 	@SubscribeMapping(CHATS_GET_ALL)
 	@SendToUser(QUEUE_CHATS_GET_ALL)
 	public Set<Chat> getAllChats() {
-		User user = this.userService.getAuthorisatedUser();
-		return this.chatService.getAllChat(user);
+		return this.chatService.getAllChat();
 	}
 
 	// 3 - Get chats by id
@@ -93,9 +92,9 @@ public class ChatWebSocketController {
 	// JavaScript request example: stompClient.send("/app/chats/1/messages/send", {}, JSON.stringify({ 'text':'Test message' }));
 	@SubscribeMapping(CHATS_id_MESSAGES_SEND)
 	@SendToUser(QUEUE_CHATS_MESSAGES_SEND)
-	public Message sendMessage(@DestinationVariable Long id, CreateMessageDto cmDto) {
+	public Message sendMessage(@DestinationVariable(value = "id") Long chatId, CreateMessageDto cmDto) {
 		User user = this.userService.getAuthorisatedUser();
-		Message sendedMessage = this.chatService.createMessage(id, cmDto);
+		Message sendedMessage = this.chatService.sendMessage(chatId, cmDto);
 		// For all participants of the current chat, except sender, send message to "/user/queue/chats/messages/incoming"
 		sendedMessage.getChat().getUsers().stream().filter(u -> !u.equals(user)).forEach(u -> this.template.convertAndSendToUser(u.getEmail(), "/queue/chats/messages/incoming", sendedMessage));
 		// For sender return message back to "/queue/chats/messages/send"
@@ -106,7 +105,7 @@ public class ChatWebSocketController {
 	// JavaScript request example: stompClient.send("/app/chats/1/messages/get-all", {}, {});
 	@SubscribeMapping(CHATS_id_MESSAGES_GET_ALL)
 	@SendToUser(QUEUE_CHATS_MESSAGES_GET_ALL)
-	public Set<Message> getMessages(@DestinationVariable Long id) {
-		return this.chatService.getMessages(id);
+	public Set<Message> getMessages(@DestinationVariable(value = "id") Long id) {
+		return this.chatService.getMessagesByChatId(id);
 	}
 }

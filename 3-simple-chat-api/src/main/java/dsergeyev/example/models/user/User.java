@@ -28,13 +28,13 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import dsergeyev.example.models.roles.Role;
 import dsergeyev.example.resources.validation.date.PastDateOrNull;
 import dsergeyev.example.resources.validation.email.ValidEmail;
-import dsergeyev.example.resources.validation.password.PasswordMatches;
+import dsergeyev.example.resources.validation.password.PasswordsMatch;
 import dsergeyev.example.resources.validation.password.ValidPassword;
 import dsergeyev.example.resources.validation.user.UniqueUserEmail;
 
 @Entity
 @Table(name = "user")
-@PasswordMatches
+@PasswordsMatch
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @JsonPropertyOrder({ "id", "email", "enabled", "role", "firstName", "secondName", "dateOfBirth", "webSite", "photo", "createDate", "updateDate" })
 public class User {

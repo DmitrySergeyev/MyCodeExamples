@@ -3,11 +3,12 @@ package dsergeyev.example.resources.httpresponse;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public abstract class StandardHttpResponse {
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({ "timeStamp", "path", "message" })
+public class StandardHttpResponse {
 
 	private ZonedDateTime timeStamp;
-	private int status;
-
 	private String message;
 	private String path;
 
@@ -17,14 +18,6 @@ public abstract class StandardHttpResponse {
 
 	public void setTimeStamp(ZonedDateTime timeStamp) {
 		this.timeStamp = timeStamp;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
 	}
 
 	public String getMessage() {
@@ -43,17 +36,15 @@ public abstract class StandardHttpResponse {
 		this.path = path;
 	}
 	
-	public StandardHttpResponse(int status, String path) {
+	public StandardHttpResponse(String path) {
 		super();
-		this.timeStamp = ZonedDateTime.now();
-		this.status = status;
+		this.timeStamp = ZonedDateTime.now(ZoneId.of("GMT"));
 		this.path = path;
 	}
 
-	public StandardHttpResponse(int status, String message, String path) {
+	public StandardHttpResponse(String message, String path) {
 		super();
 		this.timeStamp = ZonedDateTime.now(ZoneId.of("GMT"));
-		this.status = status;
 		this.message = message;
 		this.path = path;
 	}

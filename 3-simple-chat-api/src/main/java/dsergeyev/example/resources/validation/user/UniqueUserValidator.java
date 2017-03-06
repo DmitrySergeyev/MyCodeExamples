@@ -3,12 +3,8 @@ package dsergeyev.example.resources.validation.user;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import dsergeyev.example.ChatApplication;
-import dsergeyev.example.models.user.User;
 import dsergeyev.example.models.user.UserService;
 
 public class UniqueUserValidator implements ConstraintValidator<UniqueUserEmail, String> {
@@ -32,7 +28,7 @@ public class UniqueUserValidator implements ConstraintValidator<UniqueUserEmail,
 	        return false;
 		}
 
-		boolean	result = this.userService.checkIsEmailAvalible(email);		
+		boolean	result = this.userService.checkIsEmailAvailable(email);		
 		
 		if(!result) {
 			context.disableDefaultConstraintViolation();

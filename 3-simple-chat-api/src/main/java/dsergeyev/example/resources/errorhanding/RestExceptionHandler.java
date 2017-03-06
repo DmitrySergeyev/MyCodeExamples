@@ -14,7 +14,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import dsergeyev.example.resources.errorhanding.exception.UserBlockedExeption;
 import dsergeyev.example.resources.httpresponse.error.ArgumentNotValidErrorHttpResponse;
 import dsergeyev.example.resources.httpresponse.error.StandartErrorHttpResponse;
 import dsergeyev.example.resources.httpresponse.error.ValidationError;
@@ -22,28 +21,11 @@ import dsergeyev.example.resources.httpresponse.error.ValidationError;
 @ControllerAdvice
 public class RestExceptionHandler {
 
-	// @ExceptionHandler(ResourceNotFoundException.class)
-	// public ResponseEntity<?>
-	// handleResourceNotFoundException(ResourceNotFoundException ex,
-	// HttpServletRequest request) {
-	//
-	// StandartErrorDetail errorDetail = new StandartErrorDetail();
-	//
-	// errorDetail.setTimeStamp(System.currentTimeMillis());
-	// errorDetail.setStatus(HttpStatus.NOT_FOUND.value());
-	// errorDetail.setTitle("Resource Not Found");
-	// errorDetail.setDetail(ex.getMessage());
-	// errorDetail.setDeveloperMessage(ex.getClass().getName());
-	// errorDetail.setPath(request.getRequestURI());
-	//
-	// return new ResponseEntity<>(errorDetail, null, HttpStatus.NOT_FOUND);
-	// }
-
 	@ExceptionHandler(ValidationException.class)
 	public ResponseEntity<?> handleValidationError(ValidationException ex, HttpServletRequest request) {
 
-		StandartErrorHttpResponse errorDetail = new StandartErrorHttpResponse(HttpStatus.BAD_REQUEST,
-				ex.getClass().getName(), ex.getMessage(), request.getRequestURI());
+		StandartErrorHttpResponse errorDetail = new StandartErrorHttpResponse(ex.getClass().getName(), ex.getMessage(),
+				request.getRequestURI());
 		return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
 	}
 
@@ -51,8 +33,7 @@ public class RestExceptionHandler {
 	public ResponseEntity<?> handleArgumentValidationError(MethodArgumentNotValidException ex,
 			HttpServletRequest request) {
 
-		ArgumentNotValidErrorHttpResponse errorDetail = new ArgumentNotValidErrorHttpResponse(HttpStatus.BAD_REQUEST,
-				ex.getClass().getName(),
+		ArgumentNotValidErrorHttpResponse errorDetail = new ArgumentNotValidErrorHttpResponse(ex.getClass().getName(),
 				"Validation of some fields failed. For more information see 'entityErrors' and 'fieldErrors' sections",
 				request.getRequestURI());
 
@@ -80,45 +61,4 @@ public class RestExceptionHandler {
 
 		return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
 	}
-
-//	@ExceptionHandler(UserBlockedExeption.class)
-//	public ResponseEntity<?> handleUserBlockedError(ValidationException ex, HttpServletRequest request) {
-//
-//		StandartErrorHttpResponse errorDetail = new StandartErrorHttpResponse(HttpStatus.FORBIDDEN,
-//				ex.getClass().getName(), ex.getMessage(), request.getRequestURI());
-//		return new ResponseEntity<>(errorDetail, null, HttpStatus.FORBIDDEN);
-//	}
-	
-	// @ExceptionHandler(EmailAddressInUseException.class)
-	// public ResponseEntity<?>
-	// handleEmailAddressInUse(EmailAddressInUseException eaiue,
-	// HttpServletRequest request) {
-	//
-	// StandartErrorDetail errorDetail = new StandartErrorDetail();
-	//
-	// errorDetail.setTimeStamp(System.currentTimeMillis());
-	// errorDetail.setStatus(HttpStatus.BAD_REQUEST.value());
-	// errorDetail.setTitle("Create user error");
-	// errorDetail.setDetail(eaiue.getMessage());
-	// errorDetail.setDeveloperMessage(eaiue.getClass().getName());
-	// errorDetail.setPath(request.getRequestURI());
-	//
-	// return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
-	// }
-
-	// @ExceptionHandler(InvalidPasswordError.class)
-	// public ResponseEntity<?> handleChangePasswor(InvalidPasswordError eaiue,
-	// HttpServletRequest request) {
-	//
-	// StandartErrorDetail errorDetail = new StandartErrorDetail();
-	//
-	// errorDetail.setTimeStamp(System.currentTimeMillis());
-	// errorDetail.setStatus(HttpStatus.BAD_REQUEST.value());
-	// errorDetail.setTitle("Change user password error");
-	// errorDetail.setDetail(eaiue.getMessage());
-	// errorDetail.setDeveloperMessage(eaiue.getClass().getName());
-	// errorDetail.setPath(request.getRequestURI());
-	//
-	// return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
-	// }
 }

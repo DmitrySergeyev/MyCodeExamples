@@ -2,8 +2,6 @@ package dsergeyev.example.models.chat;
 
 import java.time.ZonedDateTime;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import dsergeyev.example.models.message.Message;
-import dsergeyev.example.models.message.ServiceMessage;
 import dsergeyev.example.models.user.User;
 
 @Entity

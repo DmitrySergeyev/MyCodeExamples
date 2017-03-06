@@ -12,8 +12,6 @@ public class ChatApplicationConfig {
 
 	public static final String API_VERSION_PREFIX = "/api/v1";
 
-
-
 	@Bean
 	public Validator validator() {
 		return new LocalValidatorFactoryBean();

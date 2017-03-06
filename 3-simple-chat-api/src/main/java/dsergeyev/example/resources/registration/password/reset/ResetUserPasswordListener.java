@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import dsergeyev.example.ChatApplication;
 import dsergeyev.example.models.user.User;
-import dsergeyev.example.models.user.UserService;
+import dsergeyev.example.resources.registration.RegistrationService;
 import dsergeyev.example.resources.registration.VerificationEmailSender;
 
 @Component
@@ -19,7 +19,7 @@ public class ResetUserPasswordListener implements ApplicationListener<ResetUserP
 	private static final Logger logger = LoggerFactory.getLogger(ChatApplication.class);
 	
 	@Autowired
-    private UserService service;	   
+    private RegistrationService registrationService;	   
 	@Autowired
 	private VerificationEmailSender verificationEmailSender;
  
@@ -33,7 +33,7 @@ public class ResetUserPasswordListener implements ApplicationListener<ResetUserP
     	User user = event.getUser();
     	
         String resetPasswordToken = UUID.randomUUID().toString();
-        this.service.createResetPasswordToken(user, resetPasswordToken);
+        this.registrationService.createResetPasswordToken(user, resetPasswordToken);
          
         this.verificationEmailSender.sendResetPasswordEmail(user, resetPasswordToken);
         

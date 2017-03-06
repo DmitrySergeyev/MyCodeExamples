@@ -5,13 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import dsergeyev.example.resources.httpresponse.StandardHttpResponse;
-
-@JsonPropertyOrder({ "timeStamp", "path", "status", "error", "message", "entityErrors", "fieldErrors", "exception"})
+@JsonPropertyOrder({ "timeStamp", "path", "message", "entityErrors", "fieldErrors", "exception"})
 public class ArgumentNotValidErrorHttpResponse extends StandartErrorHttpResponse {
 
 	private List<String> entityErrors = new ArrayList<>();
@@ -33,7 +29,7 @@ public class ArgumentNotValidErrorHttpResponse extends StandartErrorHttpResponse
 		this.fieldErrors = errors;
 	}
 
-	public ArgumentNotValidErrorHttpResponse(HttpStatus error, String exception, String message, String path) {
-		super(error, exception, message, path);
+	public ArgumentNotValidErrorHttpResponse(String exception, String message, String path) {
+		super(exception, message, path);
 	}	
 }

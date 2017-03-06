@@ -1,11 +1,11 @@
 package dsergeyev.example.resources.httpresponse.info;
 
-import org.springframework.http.HttpStatus;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({ "timeStamp", "path", "status", "info", "message", "newMessageId" })
-public class CreateMessageInfoHttpResponse extends StandartInfoHttpResponse {
+import dsergeyev.example.resources.httpresponse.StandardHttpResponse;
+
+@JsonPropertyOrder({ "timeStamp", "path", "message", "newMessageId" })
+public class CreateMessageInfoHttpResponse extends StandardHttpResponse {
 
 	private Long newMessageId;
 
@@ -17,8 +17,8 @@ public class CreateMessageInfoHttpResponse extends StandartInfoHttpResponse {
 		this.newMessageId = newUserId;
 	}
 
-	public CreateMessageInfoHttpResponse(HttpStatus info, String message, String path, Long newMessageId) {
-		super(info, message, path);
+	public CreateMessageInfoHttpResponse(String message, String path, Long newMessageId) {
+		super(message, path);
 		this.newMessageId = newMessageId;
 	}	
 }

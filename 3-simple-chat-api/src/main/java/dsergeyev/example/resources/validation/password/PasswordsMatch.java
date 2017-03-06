@@ -15,7 +15,7 @@ import javax.validation.Payload;
 @Target({TYPE, ANNOTATION_TYPE}) 
 @Retention(RUNTIME)
 @Constraint(validatedBy = PasswordMatchesValidator.class)
-public @interface PasswordMatches { 
+public @interface PasswordsMatch { 
     String message() default "Password and confirmation of password do not match";
     Class<?>[] groups() default {}; 
     Class<? extends Payload>[] payload() default {};

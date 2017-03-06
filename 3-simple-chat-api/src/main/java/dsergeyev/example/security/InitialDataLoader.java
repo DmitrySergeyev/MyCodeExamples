@@ -2,22 +2,17 @@ package dsergeyev.example.security;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.transaction.Transactional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import dsergeyev.example.ChatApplication;
 import dsergeyev.example.models.chat.Chat;
 import dsergeyev.example.models.chat.ChatRepository;
-import dsergeyev.example.models.chat.ChatWithoutLastMessage;
 import dsergeyev.example.models.roles.Role;
 import dsergeyev.example.models.roles.RoleRepository;
 import dsergeyev.example.models.user.User;
@@ -26,7 +21,6 @@ import dsergeyev.example.models.user.UserService;
 @Component
 public class InitialDataLoader implements ApplicationListener<ContextRefreshedEvent>  {
 
-	private static final Logger logger = LoggerFactory.getLogger(ChatApplication.class);	
 	boolean alreadySetup = false;
 
 	@Autowired
@@ -72,13 +66,13 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		Chat conversation1 = new Chat("User 2, 3, 4 chat!", testUser2, users1);
 		Chat conversation2 = new Chat("User 1, 2, 5 chat!", testUser5, users2);
 			
-		this.userService.createUser(testAdmin);
-		this.userService.createUser(moderUser);
-		this.userService.createUser(testUser1);
-		this.userService.createUser(testUser2);
-		this.userService.createUser(testUser3);
-		this.userService.createUser(testUser4);
-		this.userService.createUser(testUser5);
+		this.userService.saveUser(testAdmin);
+		this.userService.saveUser(moderUser);
+		this.userService.saveUser(testUser1);
+		this.userService.saveUser(testUser2);
+		this.userService.saveUser(testUser3);
+		this.userService.saveUser(testUser4);
+		this.userService.saveUser(testUser5);
 		
 		this.chatRepositiry.save(conversation1);
 		this.chatRepositiry.save(conversation2);

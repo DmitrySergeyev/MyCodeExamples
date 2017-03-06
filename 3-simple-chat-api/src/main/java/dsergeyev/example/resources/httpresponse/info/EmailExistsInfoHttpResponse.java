@@ -1,11 +1,11 @@
 package dsergeyev.example.resources.httpresponse.info;
 
-import org.springframework.http.HttpStatus;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({ "timeStamp", "status", "info", "message", "path" })
-public class EmailExistsInfoHttpResponse extends StandartInfoHttpResponse {
+import dsergeyev.example.resources.httpresponse.StandardHttpResponse;
+
+@JsonPropertyOrder({ "timeStamp", "path", "message", "requredEmail", "isEmailAwailable" })
+public class EmailExistsInfoHttpResponse extends StandardHttpResponse {
 
 	private String requredEmail;
 	private boolean isEmailAwailable;
@@ -26,14 +26,14 @@ public class EmailExistsInfoHttpResponse extends StandartInfoHttpResponse {
 		this.isEmailAwailable = isEmailAwailable;
 	}
 	
-	public EmailExistsInfoHttpResponse(HttpStatus info, String path, String requredEmail) {
-		super(info, path);
+	public EmailExistsInfoHttpResponse(String path, String requredEmail) {
+		super(path);
 		this.requredEmail = requredEmail;
 	}
 
-	public EmailExistsInfoHttpResponse(HttpStatus info, String message, String path, String requredEmail,
+	public EmailExistsInfoHttpResponse(String message, String path, String requredEmail,
 			boolean isEmailAwailable) {
-		super(info, message, path);
+		super(message, path);
 		this.requredEmail = requredEmail;
 		this.isEmailAwailable = isEmailAwailable;
 	}

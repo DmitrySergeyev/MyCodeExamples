@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import dsergeyev.example.ChatApplication;
 import dsergeyev.example.controllers.rest.UserRestController;
 import dsergeyev.example.models.user.User;
-import dsergeyev.example.models.user.UserService;
 import dsergeyev.example.models.user.token.VerificationToken;
 
 @Component
@@ -20,7 +19,7 @@ public class SendVerificationEmailListener implements ApplicationListener<SendVe
 	private static final Logger logger = LoggerFactory.getLogger(ChatApplication.class);
 
 	@Autowired
-	private UserService userService;
+	private RegistrationService registrationService;
 	@Autowired
 	private VerificationEmailSender verificationEmailSender;
 
@@ -32,7 +31,7 @@ public class SendVerificationEmailListener implements ApplicationListener<SendVe
 	private void confirmRegistration(SendVerificationEmailEvent event) {
 
 		User user = event.getUser();
-		VerificationToken vt = this.userService.getVerificationToken(user);
+		VerificationToken vt = this.registrationService.getVerificationToken(user);
 
 		// 1 - Generate token
 		String token = UUID.randomUUID().toString();
@@ -40,9 +39,9 @@ public class SendVerificationEmailListener implements ApplicationListener<SendVe
 		// 2 - Create new verificationToken for user if it doesn't exist and
 		// refresh current one if it does
 		if (vt == null) {
-			this.userService.createVerificationToken(user, token);
+			this.registrationService.createVerificationToken(user, token);
 		} else {
-			this.userService.refreshVerificationToken(vt, token);
+			this.registrationService.refreshVerificationToken(vt, token);
 		}
 
 		// 3 - Send email to user

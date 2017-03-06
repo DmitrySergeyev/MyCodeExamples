@@ -1,7 +1,6 @@
 package dsergeyev.example.models.chat;
 
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.validator.constraints.NotEmpty;
 

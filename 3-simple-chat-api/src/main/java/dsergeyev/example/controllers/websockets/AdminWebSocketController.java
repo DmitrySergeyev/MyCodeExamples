@@ -5,13 +5,11 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
-import dsergeyev.example.ChatApplicationConfig;
 import dsergeyev.example.models.message.ServiceMessage;
 import dsergeyev.example.models.message.ServiceMessageRepository;
 import dsergeyev.example.models.user.User;

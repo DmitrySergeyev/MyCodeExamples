@@ -9,23 +9,20 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import dsergeyev.example.ChatApplicationConfig;
-import dsergeyev.example.resources.errorhanding.exception.ChatNotAvailableToUserException;
 import dsergeyev.example.resources.errorhanding.exception.ResourceNotFoundException;
+import dsergeyev.example.resources.httpresponse.StandardHttpResponse;
 import dsergeyev.example.resources.httpresponse.error.StandartErrorHttpResponse;
-import dsergeyev.example.resources.httpresponse.info.StandartInfoHttpResponse;
 import dsergeyev.example.resources.httpresponse.info.UploadImageInfoHttpResponse;
 
 @RestController
@@ -49,14 +46,14 @@ public class FileUploadRestController {
 	public ResponseEntity<?> singleFileUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
 
 		if (file.isEmpty()) {
-			StandartInfoHttpResponse errorDetail = new StandartInfoHttpResponse(HttpStatus.BAD_REQUEST,
-					"Error! Image file can't be empty!", request.getRequestURI());
+			StandardHttpResponse errorDetail = new StandardHttpResponse("Error! Image file can't be empty!",
+					request.getRequestURI());
 			return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
 		}
 
 		if (!file.getContentType().equals(MediaType.IMAGE_PNG_VALUE)
-				&& file.getContentType().equals(MediaType.IMAGE_JPEG_VALUE)) {
-			StandartInfoHttpResponse errorDetail = new StandartInfoHttpResponse(HttpStatus.BAD_REQUEST,
+				&& !file.getContentType().equals(MediaType.IMAGE_JPEG_VALUE)) {
+			StandardHttpResponse errorDetail = new StandardHttpResponse(
 					"Error! Image file must have '.jpeg' or '.png' extension!", request.getRequestURI());
 			return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
 		}
@@ -69,13 +66,13 @@ public class FileUploadRestController {
 			Files.write(path, bytes);
 
 		} catch (IOException ex) {
-			StandartErrorHttpResponse errorDetail = new StandartErrorHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR,
-					ex.getClass().getName(), "Error! File upload faled", request.getRequestURI());
+			StandartErrorHttpResponse errorDetail = new StandartErrorHttpResponse(ex.getClass().getName(),
+					"Error! File upload faled", request.getRequestURI());
 			return new ResponseEntity<>(errorDetail, null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		UploadImageInfoHttpResponse responseInfo = new UploadImageInfoHttpResponse(HttpStatus.OK,
-				"File has been uploaded!", request.getRequestURI(), FILES_IMAGES_id + newImageName);
+		UploadImageInfoHttpResponse responseInfo = new UploadImageInfoHttpResponse("File has been uploaded!",
+				request.getRequestURI(), FILES_IMAGES_id + newImageName);
 		return new ResponseEntity<>(responseInfo, null, HttpStatus.OK);
 	}
 
@@ -91,9 +88,9 @@ public class FileUploadRestController {
 			throw new ResourceNotFoundException("Image file not found");
 		}
 
-		final HttpHeaders headers = new HttpHeaders();
+		HttpHeaders headers = new HttpHeaders();
 
-		if (path.getFileName().toString().endsWith(".jpeg")) {
+		if (path.getFileName().toString().endsWith(".jpeg") || path.getFileName().toString().endsWith(".jpg")) {
 			headers.setContentType(MediaType.IMAGE_JPEG);
 		} else if (path.getFileName().toString().endsWith(".png")) {
 			headers.setContentType(MediaType.IMAGE_PNG);

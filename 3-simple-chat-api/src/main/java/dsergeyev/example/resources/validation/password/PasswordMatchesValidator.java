@@ -2,14 +2,13 @@ package dsergeyev.example.resources.validation.password;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import javax.validation.ValidationException;
 
 import dsergeyev.example.models.user.User;
 
-public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, Object> {
+public class PasswordMatchesValidator implements ConstraintValidator<PasswordsMatch, Object> {
 
 	@Override
-	public void initialize(PasswordMatches constraintAnnotation) {
+	public void initialize(PasswordsMatch constraintAnnotation) {
 	}
 
 	@Override

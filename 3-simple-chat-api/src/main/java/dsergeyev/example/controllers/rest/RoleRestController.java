@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dsergeyev.example.ChatApplicationConfig;
+import dsergeyev.example.controllers.ControllersHelper;
 import dsergeyev.example.models.roles.RoleRepository;
 
 @RestController
@@ -19,6 +20,6 @@ public class RoleRestController {
 	
 	@GetMapping(value = "/roles")
 	public ResponseEntity<?> getAllRoles() {
-		return new ResponseEntity<>(this.roleRepository.findAll(), HttpStatus.OK);		
+		return new ResponseEntity<>(this.roleRepository.findAll(), ControllersHelper.getHeadersWithJsonContextType(), HttpStatus.OK);		
 	}
 }
