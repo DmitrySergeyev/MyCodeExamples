@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import dsergeyev.example.resources.httpresponse.StandardHttpResponse;
 
-@JsonPropertyOrder({ "timeStamp", "path", "message", "newMessageId" })
+@JsonPropertyOrder({ "timestamp", "path", "message", "newMessageId" })
 public class CreateMessageInfoHttpResponse extends StandardHttpResponse {
 
 	private Long newMessageId;

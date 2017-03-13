@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import dsergeyev.example.resources.httpresponse.StandardHttpResponse;
 
-@JsonPropertyOrder({"timeStamp", "path", "message", "exception"})
+@JsonPropertyOrder({"timestamp", "path", "message", "exception"})
 public class StandartErrorHttpResponse extends StandardHttpResponse {
 
 	private String exception;

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import dsergeyev.example.resources.httpresponse.StandardHttpResponse;
 
-@JsonPropertyOrder({ "timeStamp", "path", "message", "requredEmail", "isEmailAwailable" })
+@JsonPropertyOrder({ "timestamp", "path", "message", "requredEmail", "isEmailAwailable" })
 public class EmailExistsInfoHttpResponse extends StandardHttpResponse {
 
 	private String requredEmail;

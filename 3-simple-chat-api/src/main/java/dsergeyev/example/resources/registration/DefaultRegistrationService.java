@@ -53,43 +53,43 @@ public class DefaultRegistrationService implements RegistrationService {
 	}
 
 	@Override
-	public Long registerUser(User user, String serverName, int serverPort) throws MailException {
+	public User registerUser(User user, String appUrl) throws MailException {
 		user.setEnabled(false);
 		user.setRole(this.userService.getUserRoleByRoleName("ROLE_USER"));
-		Long newUserId = this.userService.saveUser(user);
-		String appUrl = "http://" + serverName + serverPort;
+		User newUser = this.userService.saveUser(user);
 		eventPublisher.publishEvent(new SendVerificationEmailEvent(user, appUrl));
-		return newUserId;
+		return newUser;
 	}
 
 	@Override
-	public void resendRegistrationEmail(String email, String serverName, int serverPort) {
+	public void resendRegistrationEmail(String email, String appUrl) {
 		User user = this.userService.getUserByEmail(email);
 		this.checkUserAlreadyVerified(user);
-		String appUrl = "http://" + serverName + serverPort;
 		eventPublisher.publishEvent(new SendVerificationEmailEvent(user, appUrl));
 	}
 	
 	@Override
-	public void confirmRegistration(String token) {
+	public User confirmRegistration(String token) {
 		VerificationToken verificationToken = this.getVerificationToken(token);
 		
 		if (verificationToken == null) {
 			throw new InvalidTokenException("Verification error! Specified token doesn't exist");
 		}
 		
-		if (verificationToken.isVerified() == true) {
-			throw new InvalidTokenException("Verification error! Token has already been used");
-		}
-		
 		if (verificationToken.getExpiryDate().isBefore(ZonedDateTime.now())) {
 			throw new InvalidTokenException("Verification error! The validity of the token has expired");
 		}
 		
+		if (verificationToken.isVerified() == true) {
+			throw new InvalidTokenException("Verification error! Token has already been used and user has been verified");
+		}
+		
 		User user = verificationToken.getUser();
 		user.setEnabled(true);
-		this.userService.saveUser(user);
+		User enabledUser = this.userService.saveUser(user);
 		this.verifyToken(verificationToken);
+		
+		return enabledUser;
 	}
 	
 	@Override
@@ -105,9 +105,8 @@ public class DefaultRegistrationService implements RegistrationService {
 	}
 	
 	@Override
-	public void sendResetPasswordEmail(String email, String serverName, int serverPort) throws MailException {
+	public void sendResetPasswordEmail(String email, String appUrl) throws MailException {
 		User user = this.userService.getUserByEmail(email);
-		String appUrl = "http://" + serverName + serverPort;
 		eventPublisher.publishEvent(new ResetUserPasswordEvent(user, appUrl));
 	}
 	

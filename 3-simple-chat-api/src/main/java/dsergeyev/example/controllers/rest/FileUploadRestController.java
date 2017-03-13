@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import dsergeyev.example.ChatApplicationConfig;
+import dsergeyev.example.controllers.ControllersHelper;
 import dsergeyev.example.resources.errorhanding.exception.ResourceNotFoundException;
 import dsergeyev.example.resources.httpresponse.StandardHttpResponse;
 import dsergeyev.example.resources.httpresponse.error.StandartErrorHttpResponse;
@@ -29,6 +30,7 @@ import dsergeyev.example.resources.httpresponse.info.UploadImageInfoHttpResponse
 public class FileUploadRestController {
 
 	private static String UPLOADED_FOLDER = "C:\\Users\\Dmitry\\MyProjects\\Git\\MyCodeExamples\\3-simple-chat-api\\download\\images\\";
+	private static String LOCALHOST = "http://localhost";
 
 	public static final String FILES = ChatApplicationConfig.API_VERSION_PREFIX + "/files";
 	public static final String FILES_IMAGES = FILES + "/images";
@@ -55,7 +57,7 @@ public class FileUploadRestController {
 				&& !file.getContentType().equals(MediaType.IMAGE_JPEG_VALUE)) {
 			StandardHttpResponse errorDetail = new StandardHttpResponse(
 					"Error! Image file must have '.jpeg' or '.png' extension!", request.getRequestURI());
-			return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(errorDetail, ControllersHelper.getHeadersWithJsonContextType(), HttpStatus.BAD_REQUEST);
 		}
 
 		String newImageName = UUID.randomUUID().toString() + "." + getFileExtension(file.getOriginalFilename());
@@ -68,12 +70,12 @@ public class FileUploadRestController {
 		} catch (IOException ex) {
 			StandartErrorHttpResponse errorDetail = new StandartErrorHttpResponse(ex.getClass().getName(),
 					"Error! File upload faled", request.getRequestURI());
-			return new ResponseEntity<>(errorDetail, null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(errorDetail, ControllersHelper.getHeadersWithJsonContextType(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 		UploadImageInfoHttpResponse responseInfo = new UploadImageInfoHttpResponse("File has been uploaded!",
-				request.getRequestURI(), FILES_IMAGES_id + newImageName);
-		return new ResponseEntity<>(responseInfo, null, HttpStatus.OK);
+				request.getRequestURI(), ControllersHelper.getAppUrl(request.getServerName(), request.getServerPort()) + FILES_IMAGES_id + newImageName);
+		return new ResponseEntity<>(responseInfo, ControllersHelper.getHeadersWithJsonContextType(), HttpStatus.OK);
 	}
 
 	@GetMapping(FILES_IMAGES)
@@ -89,7 +91,7 @@ public class FileUploadRestController {
 		}
 
 		HttpHeaders headers = new HttpHeaders();
-
+		
 		if (path.getFileName().toString().endsWith(".jpeg") || path.getFileName().toString().endsWith(".jpg")) {
 			headers.setContentType(MediaType.IMAGE_JPEG);
 		} else if (path.getFileName().toString().endsWith(".png")) {

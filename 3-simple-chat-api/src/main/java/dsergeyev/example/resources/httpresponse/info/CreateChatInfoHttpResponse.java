@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import dsergeyev.example.resources.httpresponse.StandardHttpResponse;
 
-@JsonPropertyOrder({ "timeStamp", "path", "message", "newChatId" })
+@JsonPropertyOrder({ "timestamp", "path", "message", "newChatId" })
 public class CreateChatInfoHttpResponse extends StandardHttpResponse {
 
 	private Long newChatId;

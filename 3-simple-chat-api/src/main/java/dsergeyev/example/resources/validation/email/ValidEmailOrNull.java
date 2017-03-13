@@ -16,7 +16,7 @@ import javax.validation.Payload;
 @Target({FIELD, METHOD, ANNOTATION_TYPE}) 
 @Retention(RUNTIME)
 @Constraint(validatedBy = MyEmailValidator.class)
-public @interface ValidEmail {   
+public @interface ValidEmailOrNull {   
     String message() default "{org.hibernate.validator.constraints.Email.message}";
     Class<?>[] groups() default {}; 
     Class<? extends Payload>[] payload() default {};

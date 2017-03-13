@@ -13,7 +13,7 @@ public interface UserService {
 	User getAuthorisatedUser();
 	String getAuthorisatedUserEmail();
 	
-	Long saveUser(User user);
+	User saveUser(User user);
 	User getUserById(Long userId) throws ResourceNotFoundException;
 	User getUserByEmail(String email) throws ResourceNotFoundException;
 	Page<User> getAllUsers(String search, Pageable pageable);

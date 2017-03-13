@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import dsergeyev.example.resources.validation.password.ValidPassword;
+import dsergeyev.example.resources.validation.password.ValidPasswordOrNull;
 
 public class PasswordChangeDto {
 
@@ -28,7 +28,7 @@ public class PasswordChangeDto {
 
 	@NotNull
 	@NotEmpty
-	@ValidPassword
+	@ValidPasswordOrNull
 	public String getNewPassword() {
 		return newPassword;
 	}

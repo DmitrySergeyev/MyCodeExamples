@@ -22,5 +22,5 @@ public class ChatApplicationConfig {
 		MethodValidationPostProcessor methodValidationPostProcessor = new MethodValidationPostProcessor();
 		methodValidationPostProcessor.setValidator(validator());
 		return methodValidationPostProcessor;
-	}
+	}	
 }

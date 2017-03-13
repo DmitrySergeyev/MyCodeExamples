@@ -2,7 +2,7 @@ package dsergeyev.example.resources.registration.password.reset;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import dsergeyev.example.resources.validation.password.ValidPassword;
+import dsergeyev.example.resources.validation.password.ValidPasswordOrNull;
 
 public class PasswordResetDto {
 
@@ -15,7 +15,7 @@ public class PasswordResetDto {
 	}
 	
 	@NotEmpty
-	@ValidPassword
+	@ValidPasswordOrNull
 	public String getNewPassword() {
 		return newPassword;
 	}

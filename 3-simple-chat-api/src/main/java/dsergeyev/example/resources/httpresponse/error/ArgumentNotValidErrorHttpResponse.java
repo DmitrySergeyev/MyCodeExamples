@@ -29,7 +29,7 @@ public class ArgumentNotValidErrorHttpResponse extends StandartErrorHttpResponse
 		this.fieldErrors = errors;
 	}
 
-	public ArgumentNotValidErrorHttpResponse(String exception, String message, String path) {
-		super(exception, message, path);
+	public ArgumentNotValidErrorHttpResponse(String message, String path, String exception) {
+		super(message, path, exception);
 	}	
 }

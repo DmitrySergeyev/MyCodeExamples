@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import dsergeyev.example.resources.httpresponse.StandardHttpResponse;
 
-@JsonPropertyOrder({ "timeStamp", "path", "message", "imageUrl" })
+@JsonPropertyOrder({ "timestamp", "path", "message", "imageUrl" })
 public class UploadImageInfoHttpResponse extends StandardHttpResponse {
 
 	private String imageUrl;

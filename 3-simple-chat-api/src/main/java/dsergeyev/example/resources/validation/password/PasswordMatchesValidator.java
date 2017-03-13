@@ -5,10 +5,10 @@ import javax.validation.ConstraintValidatorContext;
 
 import dsergeyev.example.models.user.User;
 
-public class PasswordMatchesValidator implements ConstraintValidator<PasswordsMatch, Object> {
+public class PasswordMatchesValidator implements ConstraintValidator<UserPasswordsMatch, Object> {
 
 	@Override
-	public void initialize(PasswordsMatch constraintAnnotation) {
+	public void initialize(UserPasswordsMatch constraintAnnotation) {
 	}
 
 	@Override

@@ -21,11 +21,16 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"description": ""
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"user@gmail.com\",\n\t\"password\": \"qweQWE123!@#\",\n\t\"confirmationPassword\": \"qweQWE123!@#\",\n\t\"firstName\": \"Ivan\",\n\t\"secondName\": \"Ivanov\",\n\t\"dateOfBirth\": \"1991-01-01\",\n\t\"webSite\": \"https://github.com\"\n}"
+							"raw": "{\n\t\"email\": \"user@gmail.com\",\n\t\"password\": \"qweQWE123!@#\",\n\t\"confirmationPassword\": \"qweQWE123!@#\",\n\t\"firstName\": \"Ivan\",\n\t\"secondName\": \"Ivanov\",\n\t\"dateOfBirth\": \"1988-01-01\",\n\t\"webSite\": \"https://github.com\"\n}"
 						},
 						"description": ""
 					},
@@ -40,6 +45,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
 								"description": ""
 							}
 						],
@@ -57,6 +67,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
 								"description": ""
 							}
 						],
@@ -92,6 +107,11 @@
 								"key": "Authorization",
 								"value": "Basic c2VyZ2V5ZXYuZC5pQGdtYWlsLmNvbTpxd2VRV0UxMjMhQCM=",
 								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"description": ""
 							}
 						],
 						"body": {
@@ -107,7 +127,18 @@
 					"request": {
 						"url": "localhost:8080/api/v1/users/reset-password?email=user@gmail.com",
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
 						"body": {},
 						"description": ""
 					},
@@ -122,6 +153,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
 								"description": ""
 							}
 						],
@@ -138,7 +174,18 @@
 					"request": {
 						"url": "localhost:8080/api/v1/users/check-by-email?email=user@gmail.com",
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"description": ""
+							}
+						],
 						"body": {},
 						"description": ""
 					},
@@ -167,6 +214,11 @@
 							{
 								"key": "Authorization",
 								"value": "Basic dXNlcjFAZ21haWwuY29tOnVzZXIx",
+								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
 								"description": ""
 							}
 						],
@@ -199,6 +251,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"description": ""
 							}
 						],
 						"body": {},
@@ -230,6 +287,11 @@
 								"key": "Authorization",
 								"value": "Basic dXNlckBnbWFpbC5jb206cXdRVzEyIUA=",
 								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"description": ""
 							}
 						],
 						"body": {},
@@ -260,6 +322,11 @@
 							{
 								"key": "Authorization",
 								"value": "Basic dXNlcjFAZ21haWwuY29tOnVzZXIx",
+								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
 								"description": ""
 							}
 						],
@@ -294,6 +361,11 @@
 							{
 								"key": "Authorization",
 								"value": "Basic dXNlcjFAZ21haWwuY29tOnVzZXIx",
+								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
 								"description": ""
 							}
 						],
@@ -389,6 +461,11 @@
 								"key": "Authorization",
 								"value": "Basic dXNlcjFAZ21haWwuY29tOnVzZXIx",
 								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"description": ""
 							}
 						],
 						"body": {
@@ -422,6 +499,11 @@
 							{
 								"key": "Authorization",
 								"value": "Basic dXNlcjFAZ21haWwuY29tOnVzZXIx",
+								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
 								"description": ""
 							}
 						],
@@ -457,6 +539,11 @@
 								"key": "Authorization",
 								"value": "Basic dXNlcjFAZ21haWwuY29tOnVzZXIx",
 								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"description": ""
 							}
 						],
 						"body": {
@@ -491,6 +578,11 @@
 								"key": "Authorization",
 								"value": "Basic dXNlcjFAZ21haWwuY29tOnVzZXIx",
 								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"description": ""
 							}
 						],
 						"body": {
@@ -519,6 +611,11 @@
 							{
 								"key": "Authorization",
 								"value": "Basic dXNlcjNAZ21haWwuY29tOnVzZXIz",
+								"description": ""
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
 								"description": ""
 							}
 						],

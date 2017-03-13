@@ -9,11 +9,11 @@ import dsergeyev.example.resources.registration.password.reset.PasswordResetDto;
 
 public interface RegistrationService {
 	
-	Long registerUser(User user, String serverName, int serverPort) throws MailException;
-	void resendRegistrationEmail(String email, String serverName, int serverPort) throws MailException;
-	void confirmRegistration(String token);
+	User registerUser(User user, String appUrl) throws MailException;
+	void resendRegistrationEmail(String email, String appUrl) throws MailException;
+	User confirmRegistration(String token);
 	void changeUserPassword(PasswordChangeDto pcDto);
-	void sendResetPasswordEmail(String email, String serverName, int serverPort) throws MailException;
+	void sendResetPasswordEmail(String email, String appUrl) throws MailException;
 	void resetPassword(PasswordResetDto prDto);
 	
 	VerificationToken getVerificationToken(User user);

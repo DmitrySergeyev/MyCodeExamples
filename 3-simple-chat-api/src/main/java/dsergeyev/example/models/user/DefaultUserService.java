@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import dsergeyev.example.models.roles.Role;
 import dsergeyev.example.models.roles.RoleRepository;
+import dsergeyev.example.resources.errorhanding.exception.EmailAddressInUseException;
 import dsergeyev.example.resources.errorhanding.exception.InvalidPasswordError;
 import dsergeyev.example.resources.errorhanding.exception.ResourceNotFoundException;
 import dsergeyev.example.resources.httpresponse.StandardHttpResponse;
@@ -70,12 +71,14 @@ public class DefaultUserService implements UserService {
 	}
 
 	@Override
-	public Long saveUser(User user) {
+	public User saveUser(User user) {
+		if (!this.checkIsEmailAvailable(user.getEmail()))
+			throw new EmailAddressInUseException("Email address '" + user.getEmail() + "' is already in use");
 		user.setCreateDate(ZonedDateTime.now());
 		user.setUpdateDate(ZonedDateTime.now());
 		user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 		User newUser = this.userRepository.save(user);
-		return newUser.getId();
+		return newUser;
 	}
 
 	@Override

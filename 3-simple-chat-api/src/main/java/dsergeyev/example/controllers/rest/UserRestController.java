@@ -25,8 +25,8 @@ import dsergeyev.example.models.user.User;
 import dsergeyev.example.models.user.UserService;
 import dsergeyev.example.resources.httpresponse.StandardHttpResponse;
 import dsergeyev.example.resources.httpresponse.error.StandartErrorHttpResponse;
-import dsergeyev.example.resources.httpresponse.info.CreatUserInfoHttpResponse;
 import dsergeyev.example.resources.httpresponse.info.EmailExistsInfoHttpResponse;
+import dsergeyev.example.resources.httpresponse.info.UserOperationsInfoHttpResponse;
 import dsergeyev.example.resources.registration.RegistrationService;
 import dsergeyev.example.resources.registration.password.change.PasswordChangeDto;
 import dsergeyev.example.resources.registration.password.reset.PasswordResetDto;
@@ -65,40 +65,41 @@ public class UserRestController {
 	// 1.1 - Register new user (with sending confirming registration email)
 	@PostMapping(value = USERS_REGISTRATION)
 	public ResponseEntity<?> registrationUser(@Valid @RequestBody User user, HttpServletRequest request) {
-		Long newIserId;
-
+		User newUser;
+		String appUrl = ControllersHelper.getAppUrl(request.getServerName(), request.getServerPort());
 		try {
-			newIserId = this.registrationService.registerUser(user, request.getServerName(), request.getServerPort());
+			newUser = this.registrationService.registerUser(user, appUrl);
 		} catch (MailException ex) {
-			StandartErrorHttpResponse responseInfo = new StandartErrorHttpResponse(ex.getClass().getName(),
-					"Error! User has been created, but verification email has not been sent!",
-					request.getServletPath());
+			StandartErrorHttpResponse responseInfo = new StandartErrorHttpResponse(
+					"Error! User has been created, but verification email has not been sent!", request.getRequestURI(),
+					ex.getClass().getName());
 			return new ResponseEntity<>(responseInfo, ControllersHelper.getHeadersWithJsonContextType(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-
-		CreatUserInfoHttpResponse responseInfo = new CreatUserInfoHttpResponse(
-				"User has been created and verification email has been sent!", request.getServletPath(), newIserId,
-				user.getEmail());
-		return new ResponseEntity<>(responseInfo, ControllersHelper.getHeadersWithJsonContextType(), HttpStatus.OK);
+		
+		UserOperationsInfoHttpResponse responseInfo = new UserOperationsInfoHttpResponse(
+				"User has been created and verification email has been sent!", request.getRequestURI(), newUser.getId(),
+				newUser.getEmail());
+		return new ResponseEntity<>(responseInfo, ControllersHelper.getHeadersWithJsonContextType(),
+				HttpStatus.CREATED);
 	}
 
 	// 1.2 - Resent the email with confirmation of registration
 	@GetMapping(value = USERS_VERIFICATION_EMAIL_RESET)
 	public ResponseEntity<?> resendConfirmationRegistrationEmail(@RequestParam("email") String email,
 			HttpServletRequest request) {
-
+		String appUrl = ControllersHelper.getAppUrl(request.getServerName(), request.getServerPort());
 		try {
-			this.registrationService.resendRegistrationEmail(email, request.getServerName(), request.getServerPort());
+			this.registrationService.resendRegistrationEmail(email, appUrl);
 		} catch (MailException ex) {
-			StandardHttpResponse responseInfo = new StandardHttpResponse("Error! Verification email has not been sent",
-					request.getServletPath());
+			StandartErrorHttpResponse responseInfo = new StandartErrorHttpResponse("Error! Verification email has not been sent",
+					request.getContextPath(), ex.getClass().getName());
 			return new ResponseEntity<>(responseInfo, ControllersHelper.getHeadersWithJsonContextType(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 		StandardHttpResponse responseInfo = new StandardHttpResponse("Verification email has been sent",
-				request.getServletPath());
+				request.getContextPath());
 		return new ResponseEntity<>(responseInfo, ControllersHelper.getHeadersWithJsonContextType(), HttpStatus.OK);
 	}
 
@@ -117,15 +118,16 @@ public class UserRestController {
 			HttpServletRequest request) {
 		this.registrationService.changeUserPassword(passwordChangeDto);
 		StandardHttpResponse responseInfo = new StandardHttpResponse("Password has been changed",
-				request.getServletPath());
+				request.getContextPath());
 		return new ResponseEntity<>(responseInfo, ControllersHelper.getHeadersWithJsonContextType(), HttpStatus.OK);
 	}
 
 	// 1.5 - Send reset user's password email
 	@GetMapping(value = USERS_RESET_PASSWORD)
 	public ResponseEntity<?> sendResetPasswordEmail(@RequestParam String email, HttpServletRequest request) {
+		String appUrl = ControllersHelper.getAppUrl(request.getServerName(), request.getServerPort());
 		try {
-			this.registrationService.sendResetPasswordEmail(email, request.getServerName(), request.getServerPort());
+			this.registrationService.sendResetPasswordEmail(email, appUrl);
 		} catch (Exception me) {
 
 			StandardHttpResponse responseInfo = new StandardHttpResponse(
@@ -143,7 +145,8 @@ public class UserRestController {
 	public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordResetDto passwordResetDto,
 			HttpServletRequest request) {
 		this.registrationService.resetPassword(passwordResetDto);
-		StandardHttpResponse responseInfo = new StandardHttpResponse("Password has been changed", request.getContextPath());
+		StandardHttpResponse responseInfo = new StandardHttpResponse("Password has been changed",
+				request.getContextPath());
 		return new ResponseEntity<>(responseInfo, ControllersHelper.getHeadersWithJsonContextType(), HttpStatus.OK);
 	}
 
@@ -233,7 +236,7 @@ public class UserRestController {
 	@PutMapping(value = USERS)
 	public ResponseEntity<?> updateUser(@Valid @RequestBody EditUserDto editUserDto, HttpServletRequest request) {
 		User newUser = this.userService.updateUser(editUserDto);
-		CreatUserInfoHttpResponse infoResponse = new CreatUserInfoHttpResponse("User has been successfully updated!",
+		UserOperationsInfoHttpResponse infoResponse = new UserOperationsInfoHttpResponse("User has been successfully updated!",
 				request.getRequestURI(), newUser.getId(), newUser.getEmail());
 		return new ResponseEntity<>(infoResponse, ControllersHelper.getHeadersWithJsonContextType(), HttpStatus.OK);
 	}

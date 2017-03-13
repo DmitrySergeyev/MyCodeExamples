@@ -8,16 +8,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({ "timeStamp", "path", "message" })
 public class StandardHttpResponse {
 
-	private ZonedDateTime timeStamp;
+	private ZonedDateTime timestamp;
 	private String message;
 	private String path;
 
-	public ZonedDateTime getTimeStamp() {
-		return timeStamp;
+	public ZonedDateTime getTimestamp() {
+		return timestamp;
 	}
 
-	public void setTimeStamp(ZonedDateTime timeStamp) {
-		this.timeStamp = timeStamp;
+	public void setTimestamp(ZonedDateTime timeStamp) {
+		this.timestamp = timeStamp;
 	}
 
 	public String getMessage() {
@@ -38,13 +38,13 @@ public class StandardHttpResponse {
 	
 	public StandardHttpResponse(String path) {
 		super();
-		this.timeStamp = ZonedDateTime.now(ZoneId.of("GMT"));
+		this.timestamp = ZonedDateTime.now(ZoneId.of("GMT"));
 		this.path = path;
 	}
 
 	public StandardHttpResponse(String message, String path) {
 		super();
-		this.timeStamp = ZonedDateTime.now(ZoneId.of("GMT"));
+		this.timestamp = ZonedDateTime.now(ZoneId.of("GMT"));
 		this.message = message;
 		this.path = path;
 	}

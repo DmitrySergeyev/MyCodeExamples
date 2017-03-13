@@ -14,14 +14,19 @@ import org.passay.SpecialCharacterRule;
 import org.passay.UppercaseCharacterRule;
 import org.passay.WhitespaceRule;
 
-public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String> {
+public class PasswordConstraintValidator implements ConstraintValidator<ValidPasswordOrNull, String> {
 
 	@Override
-	public void initialize(ValidPassword arg0) {
+	public void initialize(ValidPasswordOrNull arg0) {
 	}
 
 	@Override
 	public boolean isValid(String password, ConstraintValidatorContext context) {
+		
+		if(password == null) {
+			return true;
+		}
+			
 		PasswordValidator validator = new PasswordValidator(
 				Arrays.asList(
 						new LengthRule(8, 30), 
@@ -40,7 +45,7 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
 		
 		StringBuilder sb = new StringBuilder();
 		validator.getMessages(result).forEach(str -> sb.append(str + " "));		
-		context.buildConstraintViolationWithTemplate(sb.toString()).addConstraintViolation();
+		context.buildConstraintViolationWithTemplate(sb.toString().trim()).addConstraintViolation();
 		return false;
 	}
 }
